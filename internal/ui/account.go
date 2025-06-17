@@ -2,7 +2,6 @@ package ui
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jadermoura/caixa-eletronico-app/internal/infra/db/data"
@@ -55,9 +54,9 @@ func GetBalance(db *gorm.DB) func(ctx *fiber.Ctx) error {
 				"msg":    "Número da conta não informado",
 			})
 		}
-		intVal, _ := strconv.Atoi(number)
+		// intVal, _ := strconv.Atoi(number)
 
-		account, err := data.GetBalance(db, ctx.Context(), intVal)
+		account, err := data.GetBalance(db, ctx.Context(), number)
 
 		if err != nil {
 			fmt.Printf("Erro ao obter saldo da conta: %v\n", err)
