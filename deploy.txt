@@ -1,0 +1,132 @@
+Passo 1: Criar a Aplicação com Go e Fiber
+
+Primeiro, você precisa ter uma aplicação Go com o framework Fiber. Vamos criar um exemplo básico:
+1.1 Instalar o Fiber:
+
+Se você ainda não tem o Fiber instalado no seu projeto Go, você pode adicionar ele com o comando:
+
+go get github.com/gofiber/fiber/v2
+
+1.2 Criar a Aplicação com Fiber:
+
+Aqui está um exemplo básico de como criar um servidor usando Fiber:
+
+// main.go
+package main
+
+import "github.com/gofiber/fiber/v2"
+
+func main() {
+    app := fiber.New()
+
+    app.Get("/", func(c *fiber.Ctx) error {
+        return c.SendString("Hello, Render!")
+    })
+
+    app.Listen(":3000") // A aplicação rodará na porta 3000
+}
+
+Passo 2: Preparar o Código para Deploy
+
+Agora que você tem uma aplicação Go básica com o Fiber, precisa preparar o seu código para ser feito o deploy no Render.
+2.1 Criar o arquivo go.mod:
+
+Se ainda não tem o arquivo go.mod, crie um com o seguinte comando:
+
+go mod init nome-do-seu-projeto
+
+Isso cria o arquivo go.mod e instala as dependências do seu projeto.
+2.2 Verificar a execução local:
+
+Antes de fazer o deploy, verifique se o servidor funciona corretamente localmente com o comando:
+
+go run main.go
+
+Isso deve iniciar o servidor na porta 3000. Acesse http://localhost:3000 para testar. Se você ver a mensagem "Hello, Render!", está tudo certo.
+Passo 3: Criar um Repositório no GitHub
+
+Render faz o deploy diretamente a partir de repositórios GitHub ou GitLab. Então, você precisa colocar o código em um repositório no GitHub.
+3.1 Subir o código para o GitHub:
+
+    Crie um repositório no GitHub.
+
+    No seu terminal, inicialize o git no diretório do seu projeto:
+
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/usuario/nome-do-repositorio.git
+git push -u origin master
+
+Passo 4: Deploy no Render
+
+Agora que você tem o código no GitHub, é hora de fazer o deploy no Render.
+4.1 Criar uma Conta no Render
+
+Se você ainda não tem uma conta, crie uma no Render.
+4.2 Criar um Novo Serviço no Render
+
+    Após entrar no painel do Render, clique em "New" e escolha a opção "Web Service".
+
+    Escolha GitHub como seu repositório de origem e autorize o Render a acessar seu GitHub.
+
+    Selecione o repositório que você criou no passo anterior.
+
+    Configure o serviço:
+
+        Branch: Selecione master ou a branch principal que você estiver usando.
+
+        Build Command: Deixe em branco ou coloque go build (se necessário).
+
+        Start Command: Coloque o comando que vai iniciar o seu servidor. Para Fiber, é normalmente algo como:
+
+./nome-do-seu-executavel
+
+Ou, se estiver usando o Go diretamente:
+
+go run main.go
+
+O Render vai detectar automaticamente a porta onde o aplicativo deve ser executado, então, no código do Fiber, use a variável de ambiente PORT como referência para a porta dinâmica, assim:
+
+    app.Listen(":" + os.Getenv("PORT"))
+
+    Esse trecho faz com que a aplicação use a porta configurada pelo Render (que pode variar).
+
+4.3 Configurar o Ambiente
+
+Certifique-se de que o ambiente do serviço está configurado para Go. O Render geralmente detecta automaticamente a linguagem, mas, se necessário, você pode especificar o tipo de ambiente no painel.
+4.4 Deploy
+
+Depois de configurar, clique em "Create Web Service". O Render vai iniciar o processo de deploy, instalar as dependências e iniciar o servidor. Esse processo pode levar alguns minutos.
+4.5 Testar
+
+Após o deploy, o Render fornecerá um link onde você poderá acessar sua aplicação, geralmente com a URL https://<nome-do-seu-serviço>.onrender.com.
+Passo 5: Monitoramento e Logs
+
+No painel do Render, você poderá visualizar os logs do seu serviço e monitorar a saúde do seu servidor. Isso ajuda a identificar problemas em tempo real.
+
+
+
+
+
+3. Render (Oferece Banco de Dados Gerenciado)
+
+Sim, Render também oferece serviços de banco de dados gerenciado. Se você já está usando o Render para seu serviço web, pode optar por usar seu banco de dados PostgreSQL ou Redis gerenciado. O Render cuida de toda a configuração e manutenção do banco, incluindo backups e escalabilidade.
+
+    Características:
+
+        Suporte a PostgreSQL e Redis.
+
+        Facilita a integração com seus serviços web.
+
+        Escalabilidade automática e backups diários.
+
+        Gerenciamento fácil via painel.
+
+    Como usar:
+
+        Na plataforma do Render, crie uma nova instância de banco de dados (PostgreSQL ou Redis).
+
+        Conecte o banco ao seu serviço e obtenha as credenciais de acesso.
+
+        Configure seu serviço web para se conectar a esse banco de dados.

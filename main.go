@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	conn, err := db.Connect()
+	conn, err := db.ConnectPOstgress()
 
 	if err != nil {
 		log.Fatalf("CRITICAL: Failed to connect to the database: %v", err)

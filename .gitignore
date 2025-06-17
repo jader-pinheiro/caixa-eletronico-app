@@ -1,5 +1,5 @@
 .idea/
 .vscode/
-.env
+#.env
 /cmd/caixa-eletronico-app/*
 !/cmd/caixa-eletronico-app/.gitKeep
