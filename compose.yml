@@ -1,0 +1,9 @@
+db:
+  image: postgres:alpine
+  environment:
+    POSTGRES_DB: caixa_app
+    POSTGRES_PASSWORD: passwd
+  ports:
+    - "5432:5432"
+  volumes:
+    - /home/jader_moura/Developer/databases:/var/lib/postgresql

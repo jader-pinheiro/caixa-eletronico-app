@@ -1,6 +1,9 @@
 package ui
 
 import (
+	"fmt"
+	"strconv"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/jadermoura/caixa-eletronico-app/internal/infra/db/data"
 	"github.com/jadermoura/caixa-eletronico-app/internal/infra/db/entity"
@@ -37,6 +40,37 @@ func Create(db *gorm.DB) func(ctx *fiber.Ctx) error {
 			"message":  "Conta criada com sucesso!",
 			"api_code": fiber.StatusCreated,
 			"id":       id,
+		})
+	}
+}
+
+func GetBalance(db *gorm.DB) func(ctx *fiber.Ctx) error {
+	return func(ctx *fiber.Ctx) error {
+
+		number := ctx.Params("accountID")
+
+		if number == "" {
+			return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"status": fiber.StatusBadRequest,
+				"msg":    "Número da conta não informado",
+			})
+		}
+		intVal, _ := strconv.Atoi(number)
+
+		account, err := data.GetBalance(db, ctx.Context(), intVal)
+
+		if err != nil {
+			fmt.Printf("Erro ao obter saldo da conta: %v\n", err)
+			return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"status": fiber.StatusNotFound,
+				"msg":    err.Error(),
+			})
+		}
+
+		return ctx.JSON(fiber.Map{
+			"account": account,
+			"status":  fiber.StatusOK,
+			"msg":     "Saldo obtido com sucesso!",
 		})
 	}
 }
