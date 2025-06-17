@@ -20,8 +20,6 @@ func GetRoutes(conn *gorm.DB) {
 	// app.Get("/account/statement/:accountID", ui.Statement(conn))
 	// app.Get("/account/transfer/:accountID", ui.Transfer(conn))
 
-	app.Listen(":" + os.Getenv("PORT"))
-
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":" + os.Getenv("PORT")))
 
 }
