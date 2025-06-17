@@ -27,7 +27,7 @@ func Create(db *gorm.DB, ctx context.Context, account entity.Account) (uint, err
 
 }
 
-func GetBalance(db *gorm.DB, ctx context.Context, n int) ([]entity.Account, error) {
+func GetBalance(db *gorm.DB, ctx context.Context, n string) ([]entity.Account, error) {
 	var ac []entity.Account
 	err := db.WithContext(ctx).
 		Where("nn_number_aco = ?", n).Find(&ac).Error
@@ -37,7 +37,7 @@ func GetBalance(db *gorm.DB, ctx context.Context, n int) ([]entity.Account, erro
 	fmt.Println(string(ret))
 
 	if len(ac) == 0 {
-		return nil, fmt.Errorf(MsgNotFoundRecord, "teste2")
+		return nil, fmt.Errorf(MsgNotFoundRecord, n)
 	}
 
 	if err != nil {
